@@ -61,6 +61,11 @@ been performed in this private canonical repository.
 - [x] Game files, Frida, logs, captures, and source are absent from the ZIP.
 - [x] Generated binaries and release ZIPs are ignored by Git.
 - [x] SHA-256 publication process is documented in the release-notes draft.
+- [x] The exact validated v0.2.0-poc release-candidate artifact is fixed as
+  `pcfps_zygisk_auto_bootstrap.zip` with SHA-256
+  `8fc831682ce68d66505ff8c7dfff706b8ad484c49a438d4318162f4f59573344`; any
+  approved publication must use this exact ZIP without replacement by a
+  rebuild.
 
 ## Installation validation
 

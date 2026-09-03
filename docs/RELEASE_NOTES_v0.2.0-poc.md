@@ -29,8 +29,19 @@ Windows host.
 
 ## Artifact
 
-The preferred distribution artifact is a maintainer-built ReZygisk-compatible
-module ZIP containing exactly:
+The v0.2.0-poc release candidate is the exact validated artifact
+`pcfps_zygisk_auto_bootstrap.zip`, with SHA-256:
+
+```text
+8fc831682ce68d66505ff8c7dfff706b8ad484c49a438d4318162f4f59573344
+```
+
+It passed installation, automatic bootstrap, effective 60 FPS, restart
+persistence, stock 30 FPS after disable, and 60 FPS recovery after re-enable in
+the isolated fresh validation environment. If publication is approved, use
+this exact ZIP; do not replace it with a rebuild or substitute another digest.
+
+The ZIP is a ReZygisk-compatible module containing exactly:
 
 ```text
 module.prop
@@ -68,16 +79,14 @@ baseline and environment; universal device compatibility is not claimed.
 
 ## SHA-256 publication process
 
-After the exact maintainer build intended for publication:
+The release-candidate artifact and digest above are fixed for v0.2.0-poc.
+Publication, if approved, must use that exact ZIP without a replacement build.
+Do not reuse this digest for a different build. No tag or GitHub Release has
+been created while this repository remains private.
 
 ```powershell
 Get-FileHash .\build\pcfps_zygisk_auto_bootstrap.zip -Algorithm SHA256
 ```
-
-Record the resulting digest here only for the exact artifact approved for
-public release, and publish it beside that artifact. Do not reuse a digest
-from a different build. No publication digest is assigned while this
-repository remains private.
 
 ## License model
 

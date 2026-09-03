@@ -117,10 +117,25 @@ The repository does not distribute the APK, split APKs, game assets, metadata,
 
 ## Disabling / Uninstalling
 
-Disable the `PCFPS Zygisk Auto Bootstrap` module in the supported manager and
-restart. The game should launch with stock behavior. The uninstall path is
-documented by the supported manager but was not independently tested in the
-validation run. Reinstalling the game is not part of the normal revert workflow.
+If `PCFPS Zygisk Auto Bootstrap` is listed in the supported manager UI, disable
+it there and restart. The game should launch with stock behavior. If the module
+is not listed in the manager UI, use this module-state fallback instead:
+
+```sh
+adb shell su -c "touch /data/adb/modules/pcfps_zygisk_auto_bootstrap/disable"
+```
+
+Then restart BlueStacks. To re-enable the module, remove the marker and restart
+again:
+
+```sh
+adb shell su -c "rm /data/adb/modules/pcfps_zygisk_auto_bootstrap/disable"
+```
+
+These procedures change module state only; do not manually copy payloads or
+modify game files. The uninstall path is documented by the supported manager
+but was not independently tested in the validation run. Reinstalling the game
+is not part of the normal revert workflow.
 
 ## Building from Source
 
