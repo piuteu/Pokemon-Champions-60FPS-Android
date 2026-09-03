@@ -1,7 +1,7 @@
 # Fresh Install Validation
 
-Status: Gate 1A checkpoint; the fresh environment is ready for the Play Store
-version gate.
+Status: Gate 1B blocked; the fresh Play Store version gate passed, but
+root/ReZygisk setup is not yet reproducible on this instance.
 
 Date: 2026-09-03
 
@@ -46,6 +46,8 @@ private logs.
 - A non-game BlueStacks UI component displayed a repeated-stop dialog during
   home-screen setup. No PCFPS payload, game package, or game file was involved
   in that observation; it remains an environment note only.
+- The same non-game BlueStacks component was still reported as repeatedly
+  stopping during the fresh-instance session.
 
 ## Fresh-install validation status
 
@@ -53,15 +55,21 @@ private logs.
   PASS.
 - Generic BlueStacks version, Android API, ABI, and NativeBridge capability:
   PASS.
-- Google Play installation: OWNER ACTION REQUIRED.
-- Game versionName/versionCode confirmation before PCFPS installation: PENDING.
+- Google Play installation from the Play Store: PASS.
+- Game versionName/versionCode confirmation before PCFPS installation: PASS;
+  versionName 1.1.5 / versionCode 3191.
+- Root/ReZygisk bootstrap: BLOCKED before PCFPS installation. The ordinary
+  shell remained non-root, no module directory was visible, and a root proof
+  could not be obtained while the BlueStacks component was repeatedly
+  stopping. No bypass or manual payload copy was attempted.
 - PCFPS module installation and enablement: NOT STARTED.
 - Frida-free automatic bootstrap validation: NOT STARTED.
 
-The current checkpoint must stop before module installation until the owner
-completes the required clean-instance and Google Play steps. If Play Store
-provides a game version other than the validated 1.1.5 / versionCode 3191,
-the current version-specific runtime hook must not be applied.
+The current checkpoint must stop before module installation because the
+supported root/ReZygisk setup has not been independently verified. If a
+future Play Store installation provides a game version other than the
+validated 1.1.5 / versionCode 3191, the current version-specific runtime
+hook must not be applied.
 
 ## Known limitations
 
