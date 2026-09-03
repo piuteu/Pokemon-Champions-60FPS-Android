@@ -164,7 +164,7 @@ if ($MetadataOnly) {
         Add-MetadataText -Text ([string]$branchRef) -Identifier $identifier -Context 'branch_name'
     }
 
-    $tagRefs = @(git -C $rootPath for-each-ref --format='%(refname)%x09%(objectname)' refs/tags)
+    $tagRefs = @(git -C $rootPath for-each-ref --format='%(refname)%09%(objectname)' refs/tags)
     if ($LASTEXITCODE -ne 0) {
         throw 'Unable to enumerate tag refs'
     }
