@@ -1,6 +1,7 @@
 # Fresh Install Validation
 
-Status: Gate 1A checkpoint; fresh-install runtime validation is pending.
+Status: Gate 1A checkpoint; the fresh environment is ready for the Play Store
+version gate.
 
 Date: 2026-09-03
 
@@ -31,13 +32,28 @@ private logs.
   checkpoint.
 - Frida: not used for this build checkpoint.
 
+## Fresh environment baseline
+
+- Genuinely new supported instance, not a clone of the validated instance:
+  PASS.
+- BlueStacks family: BlueStacks 5, Android 13 / API 33.
+- Guest ABI: x86_64.
+- NativeBridge capability: present.
+- Pre-PCFPS game package check: PASS; no Pokémon Champions-related package was
+  present before Play Store installation.
+- Pre-PCFPS root check: PASS; the shell was non-root.
+- Pre-PCFPS module check: PASS; no accessible module directory was present.
+- A non-game BlueStacks UI component displayed a repeated-stop dialog during
+  home-screen setup. No PCFPS payload, game package, or game file was involved
+  in that observation; it remains an environment note only.
+
 ## Fresh-install validation status
 
 - Genuinely new supported BlueStacks Android 13 / Tiramisu64-class instance:
-  PENDING.
+  PASS.
 - Generic BlueStacks version, Android API, ABI, and NativeBridge capability:
-  PENDING fresh-instance confirmation.
-- Google Play installation: PENDING owner-required Play Store interaction.
+  PASS.
+- Google Play installation: OWNER ACTION REQUIRED.
 - Game versionName/versionCode confirmation before PCFPS installation: PENDING.
 - PCFPS module installation and enablement: NOT STARTED.
 - Frida-free automatic bootstrap validation: NOT STARTED.
