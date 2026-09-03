@@ -33,7 +33,7 @@ been performed in this private canonical repository.
 
 - [x] README describes the independent runtime-only project and current
   validated version without presenting it as a 1.1.5-only product.
-- [ ] `LICENSE` source-available license and third-party carve-out reviewed
+- [x] `LICENSE` source-available license and third-party carve-out reviewed
   and approved by the project owner.
 - [x] Source-available wording is used; the project is not described as
   OSI-approved open source.
@@ -88,7 +88,7 @@ been performed in this private canonical repository.
 - [x] No legacy tag was migrated into this canonical repository; no tag or
   release has been created here.
 - [ ] First public release tag is PM-approved; no public tag has been created.
-- [ ] Release notes are PM-approved; the current file is a draft only.
+- [x] Release notes content is PM-approved; publication remains pending.
 - [ ] Repository visibility is changed only after PM review of this checklist,
   LICENSE, README, history/privacy findings, and the fresh-install decision.
 
