@@ -204,7 +204,7 @@ was returned unchanged.
 Runtime environment:
 
 ```text
-ADB serial:       <offline-emulator-serial> (state=device; <offline-emulator-serial> was offline)
+ADB serial:       <emulator-serial> (state=device; <offline-emulator-serial> was offline)
 Android API:      33 / Tiramisu
 process:          normal Pokémon Champions launch, PID <pid>
 ABI list:         x86_64,x86,arm64-v8a,armeabi-v7a,armeabi

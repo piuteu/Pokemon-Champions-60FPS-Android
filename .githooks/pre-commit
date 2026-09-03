@@ -30,3 +30,6 @@ esac
 "$powershell_command" -NoProfile -ExecutionPolicy Bypass \
     -File "$repo_root_ps/scripts/git-identity-check.ps1" \
     -Root "$repo_root_ps" -RequireConfig
+"$powershell_command" -NoProfile -ExecutionPolicy Bypass \
+    -File "$repo_root_ps/scripts/privacy-check.ps1" \
+    -Root "$repo_root_ps" -MetadataOnly

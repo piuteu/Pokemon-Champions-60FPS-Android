@@ -2,7 +2,8 @@
 param(
     [string]$Root = (Join-Path $PSScriptRoot '..'),
     [string]$DisallowedUsername = $env:PCFPS_PRIVACY_LOCAL_USERNAME,
-    [switch]$TrackedOnly
+    [switch]$TrackedOnly,
+    [switch]$MetadataOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -18,7 +19,10 @@ $patterns = [ordered]@{
 }
 
 $findings = [System.Collections.Generic.List[object]]::new()
-if ($TrackedOnly) {
+if ($MetadataOnly) {
+    $files = @()
+}
+elseif ($TrackedOnly) {
     $relativePaths = @(git -C $rootPath ls-files | ForEach-Object {
         ([string]$_).Trim([char]0xFEFF, [char]0x0D, [char]0x0A, [char]0x20, [char]0x09)
     })
@@ -89,6 +93,130 @@ foreach ($file in $files) {
             })
         }
     }
+}
+
+if ($MetadataOnly) {
+    $metadataFindings = [System.Collections.Generic.List[object]]::new()
+
+    function Get-MetadataRefIdentifier {
+        param([string]$Value)
+
+        $hasher = [System.Security.Cryptography.SHA256]::Create()
+        try {
+            $digest = $hasher.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($Value))
+            return ([System.BitConverter]::ToString($digest).Replace('-', '').ToLowerInvariant())
+        }
+        finally {
+            $hasher.Dispose()
+        }
+    }
+
+    function Add-MetadataFinding {
+        param(
+            [string]$Identifier,
+            [string]$Category
+        )
+
+        $metadataFindings.Add([pscustomobject]@{
+            Identifier = $Identifier
+            Category = $Category
+        }) | Out-Null
+    }
+
+    function Add-MetadataText {
+        param(
+            [string]$Text,
+            [string]$Identifier,
+            [string]$Context
+        )
+
+        foreach ($line in ($Text -split '\r?\n')) {
+            foreach ($category in $patterns.Keys) {
+                foreach ($match in [regex]::Matches($line, $patterns[$category])) {
+                    if ($category -eq 'email' -and
+                        $match.Value -match '(?i)@users\.noreply\.github\.com$') {
+                        continue
+                    }
+                    Add-MetadataFinding -Identifier $Identifier -Category ('{0}/{1}' -f $Context, $category)
+                }
+            }
+        }
+    }
+
+    $reachableCommits = @(git -C $rootPath rev-list --all)
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Unable to enumerate reachable commits'
+    }
+    foreach ($commit in $reachableCommits) {
+        $commitRaw = git -C $rootPath cat-file commit $commit 2>$null | Out-String
+        $messageMatch = [regex]::Match($commitRaw, '\r?\n\r?\n([\s\S]*)$')
+        if ($messageMatch.Success) {
+            Add-MetadataText -Text $messageMatch.Groups[1].Value -Identifier ('commit:' + $commit) -Context 'commit_message'
+        }
+    }
+
+    $branchRefs = @(git -C $rootPath for-each-ref --format='%(refname)' refs/heads refs/remotes)
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Unable to enumerate branch refs'
+    }
+    foreach ($branchRef in $branchRefs) {
+        $identifier = 'ref-id:' + (Get-MetadataRefIdentifier ([string]$branchRef))
+        Add-MetadataText -Text ([string]$branchRef) -Identifier $identifier -Context 'branch_name'
+    }
+
+    $tagRefs = @(git -C $rootPath for-each-ref --format='%(refname)%x09%(objectname)' refs/tags)
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Unable to enumerate tag refs'
+    }
+    $annotatedTagCount = 0
+    foreach ($tagRef in $tagRefs) {
+        $tagFields = ([string]$tagRef) -split ([char]9), 2
+        if ($tagFields.Count -ne 2) {
+            throw 'Unable to parse tag ref'
+        }
+        $tagName = [string]$tagFields[0]
+        $tagObject = [string]$tagFields[1]
+        $identifier = 'ref-id:' + (Get-MetadataRefIdentifier $tagName)
+        Add-MetadataText -Text $tagName -Identifier $identifier -Context 'tag_name'
+
+        $objectType = (git -C $rootPath cat-file -t $tagObject 2>$null).Trim()
+        if ($objectType -ne 'tag') {
+            continue
+        }
+        $annotatedTagCount++
+        $tagRaw = git -C $rootPath cat-file tag $tagObject 2>$null | Out-String
+        $tagHeader = ($tagRaw -split '\r?\n\r?\n', 2)[0]
+        $taggerLine = @($tagHeader -split '\r?\n' | Where-Object { $_ -like 'tagger *' } | Select-Object -First 1)
+        if ($taggerLine.Count -eq 1) {
+            $taggerMatch = [regex]::Match([string]$taggerLine[0], '^tagger (.*) <([^>]*)> \d+ [+-]\d+$')
+            if (-not $taggerMatch.Success) {
+                Add-MetadataFinding -Identifier $identifier -Category 'annotated_tag_tagger_identity'
+            }
+            else {
+                $taggerName = $taggerMatch.Groups[1].Value
+                $taggerEmail = $taggerMatch.Groups[2].Value
+                if ($taggerName -cne 'piuteu' -or $taggerEmail -cne 'piuteu@users.noreply.github.com') {
+                    Add-MetadataFinding -Identifier $identifier -Category 'annotated_tag_tagger_identity'
+                }
+                Add-MetadataText -Text ([string]$taggerLine[0]) -Identifier $identifier -Context 'annotated_tag_tagger'
+            }
+        }
+        $tagMessageMatch = [regex]::Match($tagRaw, '\r?\n\r?\n([\s\S]*)$')
+        if ($tagMessageMatch.Success) {
+            Add-MetadataText -Text $tagMessageMatch.Groups[1].Value -Identifier $identifier -Context 'annotated_tag_message'
+        }
+    }
+
+    if ($metadataFindings.Count -gt 0) {
+        foreach ($finding in $metadataFindings) {
+            'METADATA_FINDING ref_id={0} category={1} status=FAIL' -f $finding.Identifier, $finding.Category
+        }
+        'GIT_METADATA_PRIVACY_CHECK_FAIL findings={0}' -f $metadataFindings.Count
+        exit 1
+    }
+
+    'GIT_METADATA_PRIVACY_CHECK_PASS reachable_commits={0} branches={1} tags={2} annotated_tags={3}' -f $reachableCommits.Count, $branchRefs.Count, $tagRefs.Count, $annotatedTagCount
+    exit 0
 }
 
 if ($findings.Count -gt 0) {

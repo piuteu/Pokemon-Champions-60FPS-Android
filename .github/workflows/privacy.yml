@@ -66,3 +66,7 @@ jobs:
       - name: Git identity gate
         shell: pwsh
         run: ./scripts/git-identity-check.ps1 -Root .
+
+      - name: Git metadata privacy scan
+        shell: pwsh
+        run: ./scripts/privacy-check.ps1 -Root . -MetadataOnly
