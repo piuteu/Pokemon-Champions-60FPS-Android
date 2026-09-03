@@ -1,5 +1,7 @@
 # Pokémon Champions Android 60FPS Runtime Research
 
+English | [日本語](README_JA.md)
+
 An independent runtime-only 60 FPS research project for the Android version
 of Pokémon Champions. The current validated baseline is Pokémon Champions
 Android `1.1.5` / `versionCode 3191`; future app versions require a fresh
