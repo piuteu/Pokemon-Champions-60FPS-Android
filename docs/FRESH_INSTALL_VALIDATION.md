@@ -1,7 +1,7 @@
 # Fresh Install Validation
 
-Status: Gate 1B blocked; the fresh Play Store version gate passed, but
-root/ReZygisk setup is not yet reproducible on this instance.
+Status: Gate 1C PASS in an isolated fresh environment on a separate physical
+Windows host.
 
 Date: 2026-09-03
 
@@ -12,68 +12,77 @@ validation evidence only; it does not record account information, emulator
 serials, process IDs, host paths, hostnames, private addresses, tokens, or
 private logs.
 
-## Gate 1A — build and clean-install preparation
+## Gate 1A — artifact and clean-install preparation
 
-- Repository and branch selection: PASS.
-- Repository-local privacy setup: PASS.
-- Direct NDK clang build: PASS.
+- Repository, branch selection, and repository-local privacy setup: PASS.
+- Canonical source build with the validated NDK r27d / Android API 33 path:
+  PASS.
 - Build target: Android API 33, ARM64 guest payload and x86_64 bootstrap.
 - ARM64 payload: ELF64 AArch64.
 - ReZygisk bootstrap: ELF64 x86_64.
 - Module ZIP contents: exactly `module.prop`, `zygisk/x86_64.so`, and
   `payload/libpcfps_runtime.so`.
-- Gate 1A module ZIP SHA-256:
-  `0be5756c81f8b05428e61ef408665a46f1d0f42bb47f2f1340c0679aabb5d67b`
-- Gate 1A payload SHA-256:
-  `b52ffbff0a514792dbf037af31cd4b64d1338f4277fe526534218b0ab5a72c47`
-- Gate 1A bootstrap SHA-256:
-  `dc10e56bda8d5e7054ccff25db781b09c92dc206499ad587ea2639e9a031aa3e`
-- APK, split APKs, game libraries, and game assets: not modified by this
-  checkpoint.
-- Frida: not used for this build checkpoint.
+- Canonical module ZIP SHA-256:
+  `8fc831682ce68d66505ff8c7dfff706b8ad484c49a438d4318162f4f59573344`.
+- ARM64 payload SHA-256:
+  `b52ffbff0a514792dbf037af31cd4b64d1338f4277fe526534218b0ab5a72c47`.
+- x86_64 bootstrap SHA-256:
+  `dc10e56bda8d5e7054ccff25db781b09c92dc206499ad587ea2639e9a031aa3e`.
+- APK, split APKs, game libraries, and game assets: not modified.
+- Frida: not used in the final validation path.
 
 ## Fresh environment baseline
 
-- Genuinely new supported instance, not a clone of the validated instance:
-  PASS.
-- BlueStacks family: BlueStacks 5, Android 13 / API 33.
+- Isolated separate physical Windows host: PASS.
+- Fresh BlueStacks Android 13 / Tiramisu64-class environment: PASS.
 - Guest ABI: x86_64.
 - NativeBridge capability: present.
-- Pre-PCFPS game package check: PASS; no Pokémon Champions-related package was
-  present before Play Store installation.
-- Pre-PCFPS root check: PASS; the shell was non-root.
-- Pre-PCFPS module check: PASS; no accessible module directory was present.
-- A non-game BlueStacks UI component displayed a repeated-stop dialog during
-  home-screen setup. No PCFPS payload, game package, or game file was involved
-  in that observation; it remains an environment note only.
-- The same non-game BlueStacks component was still reported as repeatedly
-  stopping during the fresh-instance session.
-
-## Fresh-install validation status
-
-- Genuinely new supported BlueStacks Android 13 / Tiramisu64-class instance:
-  PASS.
-- Generic BlueStacks version, Android API, ABI, and NativeBridge capability:
-  PASS.
-- Google Play installation from the Play Store: PASS.
+- Manager/Kyubi root: PASS.
+- ReZygisk active: PASS.
+- Google Play installation of Pokémon Champions: PASS.
 - Game versionName/versionCode confirmation before PCFPS installation: PASS;
   versionName 1.1.5 / versionCode 3191.
-- Root/ReZygisk bootstrap: BLOCKED before PCFPS installation. The ordinary
-  shell remained non-root, no module directory was visible, and a root proof
-  could not be obtained while the BlueStacks component was repeatedly
-  stopping. No bypass or manual payload copy was attempted.
-- PCFPS module installation and enablement: NOT STARTED.
-- Frida-free automatic bootstrap validation: NOT STARTED.
+- Stock game files and package contents were not modified.
 
-The current checkpoint must stop before module installation because the
-supported root/ReZygisk setup has not been independently verified. If a
-future Play Store installation provides a game version other than the
-validated 1.1.5 / versionCode 3191, the current version-specific runtime
-hook must not be applied.
+## Gate 1B — root and ReZygisk
+
+- Magisk-managed Manager/Kyubi root: PASS.
+- `su -c id` root proof: PASS.
+- ReZygisk installation and active bootstrap: PASS.
+- Built-in Magisk Zygisk remained disabled for the ReZygisk path.
+- Stock Pokémon Champions launch after root/ReZygisk setup: PASS.
+- Play licensing and normal game startup remained intact before PCFPS
+  installation.
+
+## Gate 1C — Frida-free runtime validation
+
+- Fresh canonical module ZIP installation: PASS.
+- Kyubi UI module list did not enumerate PCFPS, but the module directory was
+  present and the expected runtime behavior/log evidence proved installation
+  and operation.
+- Normal launcher icon launch: PASS.
+- Automatic x86_64 bootstrap: PASS.
+- ARM64 guest constructor: PASS.
+- ARM64 guest `JNI_OnLoad`: PASS.
+- `VERSION_GUARD_OK`: PASS.
+- FPS hook installation: PASS.
+- Animation framerate hook installation: PASS.
+- Effective 60 FPS: PASS.
+- Force-stop followed by normal relaunch and 60 FPS: PASS.
+- Full BlueStacks restart followed by normal relaunch and 60 FPS: PASS.
+- Module disable followed by stock 30 FPS: PASS.
+- Module re-enable followed by restart and 60 FPS recovery: PASS.
+- No PCFPS-attributable fatal error or ANR was observed during validation.
+- Frida was not used.
+- Pokémon Champions APK/splits/assets remained unmodified.
 
 ## Known limitations
 
-Gate 1A proves only the sanitized branch build and package shape. It does not
-prove fresh-install licensing, PairIP, Play Asset Delivery, ReZygisk loading,
-runtime hook installation, restart persistence, or stock behavior after module
-disable.
+The Kyubi UI module list is not treated as the authoritative PCFPS
+installation indicator for this environment. The installation was established
+by the module directory and the expected automatic bootstrap, ARM64 payload,
+version guard, FPS-hook, and animation-hook runtime evidence.
+
+The result is specific to the validated Pokémon Champions 1.1.5 /
+versionCode 3191 build and the isolated BlueStacks Android 13 environment.
+Future game versions and other environments require separate validation.

@@ -3,7 +3,7 @@
 This checklist is a publication draft for PM review. The repository must
 remain private until the owner approves the legal, privacy, installation, and
 release gates. No public visibility change, release tag, or GitHub Release has
-been performed in this staging repository.
+been performed in this private canonical repository.
 
 ## Repository and code
 
@@ -68,15 +68,18 @@ been performed in this staging repository.
   checks.
 - [x] Frida-free automatic bootstrap and animation correction were observed in
   the validated environment.
-- [ ] Fresh-install ZIP gate: **BLOCKED** until a genuinely clean supported
-  BlueStacks environment is available. Do not claim this gate passed based on
-  the existing preconfigured/rooted instance.
+- [x] Fresh-install ZIP gate: **PASS** in an isolated fresh BlueStacks
+  Android 13 / Tiramisu64-class environment on a separate physical Windows
+  host. Google Play version 1.1.5 / versionCode 3191, root/ReZygisk,
+  Frida-free automatic bootstrap, normal launch, force-stop/relaunch, full
+  restart, stock revert after module disable, and re-enable recovery passed.
+  No PCFPS-attributable fatal error or ANR was observed.
 
 ## Publication metadata and release process
 
 - [x] Recommended repository description is recorded below.
 - [x] Recommended GitHub topics are recorded below.
-- [x] No legacy tag was migrated into this fresh staging repository; no tag or
+- [x] No legacy tag was migrated into this canonical repository; no tag or
   release has been created here.
 - [ ] First public release tag is PM-approved; no public tag has been created.
 - [ ] Release notes are PM-approved; the current file is a draft only.
