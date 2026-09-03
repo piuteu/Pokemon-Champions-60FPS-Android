@@ -1,0 +1,6 @@
+id=pcfps_zygisk_auto_bootstrap
+name=PCFPS Zygisk Auto Bootstrap
+version=0.1.0
+versionCode=1
+author=PCFPS research
+description=Package-scoped ReZygisk bootstrap for the Pokémon Champions 1.1.5 ARM64 runtime payload

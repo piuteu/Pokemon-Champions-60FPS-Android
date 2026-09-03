@@ -1,0 +1,93 @@
+Pokémon Champions 60FPS Research Source License
+
+Copyright (c) 2026 piuteu and contributors.
+
+This is a custom source-available project license. It is not represented as an
+OSI-approved open-source license, legally reviewed text, or legal advice.
+
+1. Scope and grant
+
+This license applies only to original source code and documentation in this
+repository for which the copyright holder has authority to grant permission.
+Subject to the conditions below, permission is granted to:
+
+* view, copy, and study the source and documentation;
+* clone the repository for personal use;
+* build and run the project for personal, non-commercial use;
+* make private modifications for personal, non-commercial use;
+* use the ordinary fork functionality of a GitHub public repository for
+  research and collaboration;
+* modify a GitHub fork for research and collaboration;
+* submit upstream Pull Requests; and
+* report issues, discuss research, and cite the project.
+
+The GitHub public-repository fork and contribution permissions are not a
+prohibition on GitHub forks. They are a limited collaboration exception and
+do not authorize an independent mirror or standalone distribution.
+
+2. Redistribution and publication restrictions
+
+Without separate written permission from the applicable copyright holder, you
+must not:
+
+* redistribute or rehost an independent source package of this project;
+* mirror the repository outside normal GitHub fork functionality;
+* redistribute compiled project binaries or module ZIPs;
+* distribute a third-party or modified Magisk, ReZygisk, or Kitsune module;
+* publish a standalone modified release;
+* rebrand or repackage the project;
+* use the project commercially, sell it, provide paid access to it, or use it
+  in paid redistribution or commercial bundling; or
+* sublicense any rights granted by this license.
+
+The permissions for a GitHub fork, collaboration, and upstream Pull Request
+do not grant permission to distribute compiled artifacts or to create an
+independent public mirror.
+
+3. Third-party material
+
+Files or portions of files that contain their own copyright or license notice
+remain governed by those notices. This project license applies only to original
+project material for which the project copyright holder has authority to grant
+rights.
+
+This license does not grant any right in Pokémon, Pokémon Champions, Nintendo
+intellectual property, The Pokémon Company intellectual property, Game Freak
+intellectual property, Creatures intellectual property, BlueStacks, Unity,
+Google Play content, or any other third-party software, trademark, asset,
+resource, or game file. Those rights remain with their respective owners.
+
+You must not bundle or distribute an APK, split APK, APKM, XAPK,
+global-metadata.dat, libil2cpp.so, libunity.so, extracted game assets,
+resources, or other proprietary game files with this project.
+
+4. No affiliation or endorsement
+
+This project is unofficial and independent. Nothing in this license grants
+permission to imply affiliation with, sponsorship by, or endorsement from
+Nintendo, The Pokémon Company, Game Freak, Creatures, BlueStacks, Unity,
+Google, or any other third party.
+
+5. Disclaimer of warranty
+
+THE SOURCE AND DOCUMENTATION ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
+KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE, AND
+NON-INFRINGEMENT. The project is research software and may be version-
+specific, incomplete, or unsuitable for a particular environment.
+
+6. Limitation of liability
+
+TO THE MAXIMUM EXTENT PERMITTED BY LAW, NO COPYRIGHT HOLDER OR CONTRIBUTOR
+SHALL BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN
+ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN
+CONNECTION WITH THE SOURCE, DOCUMENTATION, BUILD, INSTALLATION, OR USE OF
+THE PROJECT.
+
+7. Termination
+
+The rights granted by this license terminate automatically if you materially
+breach its conditions. Permissions for a GitHub fork or upstream contribution
+do not excuse a breach of the redistribution, commercial-use, third-party-IP,
+or no-sublicense restrictions. Upon termination, stop the affected use and
+distribution, except for copies that must be retained by law.
