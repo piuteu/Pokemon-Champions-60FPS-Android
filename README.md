@@ -17,6 +17,8 @@ verification, and contributors.
 
 The current production baseline has passed the CODE-01 runtime audit and the
 automatic, Frida-free bootstrap gate in the validated BlueStacks environment.
+An isolated fresh-install validation on a separate physical Windows host also
+passed for this baseline; see [Fresh-install validation](docs/FRESH_INSTALL_VALIDATION.md).
 The user-confirmed validation recording showed unique rendered frames at
 approximately 60 FPS and smoother trainer/human animation. This is a research
 result for the stated environment, not a broad device-compatibility claim.

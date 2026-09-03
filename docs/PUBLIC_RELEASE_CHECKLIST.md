@@ -23,8 +23,9 @@ been performed in this private canonical repository.
   history was not migrated.
 - [x] Reachable commit author and committer metadata use only the sanitized
   project identity; no legacy identity is present.
-- [ ] Privacy gate and author metadata remain subject to PM review before
-  public visibility.
+- [x] Privacy and author-metadata gates passed and received PM privacy review;
+  public visibility remains subject to the outstanding legal and publication
+  approvals.
 - [x] Copyrighted/proprietary file audit passed for the current tree and
   reachable history.
 

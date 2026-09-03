@@ -7,7 +7,9 @@ tag or GitHub Release has been created.
 
 This milestone prepares the runtime-only research project for public review.
 The currently supported game baseline is Pokémon Champions Android `1.1.5` /
-`versionCode 3191` in the validated BlueStacks Tiramisu64 environment.
+`versionCode 3191`. Fresh-install validation also passed in an isolated
+BlueStacks Android 13 / Tiramisu64-class environment on a separate physical
+Windows host.
 
 ## Highlights
 
@@ -17,9 +19,11 @@ The currently supported game baseline is Pokémon Champions Android `1.1.5` /
   requests `30` and `-1` to effective `60` while calling the original target;
 - caller-scoped `AnimationClip.frameRate` correction for the proven
   `AnimationPlayer.AdvanceTime` path;
-- normal launch, force-stop/relaunch, and full validated-environment restart
-  persistence;
-- module disable path that restores stock behavior;
+- isolated fresh-install validation on a separate physical Windows host;
+- normal launch, force-stop/relaunch, and full BlueStacks restart persistence;
+- module disable path that restores stock 30 FPS, followed by re-enable and
+  restart recovery to 60 FPS;
+- no PCFPS-attributable fatal error or ANR observed during validation;
 - residual 30 Hz audit, transient-drop profiling, and CODE-01 production
   cleanup documentation.
 
@@ -40,27 +44,27 @@ metadata, game asset, Frida binary, source file, log, or capture.
 ## Validation highlights
 
 The current production payload was built with direct NDK clang and verified as
-ELF64 AArch64; the bootstrap is ELF64 x86_64. In the validated environment,
-normal launch and restart flows showed the ARM64 constructor, `JNI_OnLoad`,
-both runtime hook installations, initial effective 60 setting, and successful
-`Runtime.load0` return without Frida. A disabled-module launch emitted no
-project runtime markers and restored stock behavior.
+ELF64 AArch64; the bootstrap is ELF64 x86_64. In the isolated fresh-install
+validation on a separate physical Windows host, the normal launcher path
+showed the ARM64 constructor, `JNI_OnLoad`, both runtime hook installations,
+initial effective 60 setting, and successful `Runtime.load0` return without
+Frida. Force-stop/relaunch and full BlueStacks restart each retained 60 FPS.
+Disabling the module restored stock 30 FPS; re-enabling it and restarting
+recovered 60 FPS. No PCFPS-attributable fatal error or ANR was observed.
 
-The user-confirmed validation recording showed unique rendered frames at
-approximately 60 FPS and smoother trainer/human animation. This result is
-environment-specific and is not a guarantee for unverified game versions or
-devices.
+The validation recording showed unique rendered frames at approximately 60 FPS
+and smoother trainer/human animation. This result is specific to the validated
+baseline and environment; universal device compatibility is not claimed.
 
 ## Limitations
 
 - only `1.1.5` / `3191` is supported and validated;
-- other devices, emulators, root managers, and configurations are untested;
+- other devices, emulators, root managers, display policies, and configurations
+  are untested; universal compatibility is not established;
 - future versions require a new layout/hash/offset audit and must fail open
   where reasonably possible;
 - transient missed-vsync/frame-slot hitches were observed under BlueStacks
   profiling and remain a non-blocking research limitation;
-- a genuinely clean fresh-install ZIP gate remains to be run before claiming
-  a polished public installer.
 
 ## SHA-256 publication process
 
@@ -72,8 +76,8 @@ Get-FileHash .\build\pcfps_zygisk_auto_bootstrap.zip -Algorithm SHA256
 
 Record the resulting digest here only for the exact artifact approved for
 public release, and publish it beside that artifact. Do not reuse a digest
-from a different build. No publication digest is assigned to this private
-staging repository.
+from a different build. No publication digest is assigned while this
+repository remains private.
 
 ## License model
 
@@ -82,5 +86,5 @@ open-source license. The license permits study, personal/non-commercial builds,
 private modification, GitHub fork collaboration, issues, citation, and
 upstream Pull Requests. It restricts independent mirrors, standalone source
 packages, compiled module redistribution, commercial use, and distribution of
-third-party game content. The private staging repository remains subject to PM
-review before any public visibility decision.
+third-party game content. The private canonical repository remains subject to
+PM review before any public visibility decision.
