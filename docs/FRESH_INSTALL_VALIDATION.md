@@ -49,7 +49,8 @@ private logs.
 - Magisk-managed Manager/Kyubi root: PASS.
 - `su -c id` root proof: PASS.
 - ReZygisk installation and active bootstrap: PASS.
-- Built-in Magisk Zygisk remained disabled for the ReZygisk path.
+- Built-in Zygisk was not present or active in the Kyubi build used for this
+  validation; ReZygisk provided the Zygisk-compatible runtime path.
 - Stock Pokémon Champions launch after root/ReZygisk setup: PASS.
 - Play licensing and normal game startup remained intact before PCFPS
   installation.
