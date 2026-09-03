@@ -30,10 +30,15 @@ jobs:
             '(?i)authorization\s*:\s*bearer\s+\S+',
             '(?i)\b(?:api[_-]?key|access[_-]?token|refresh[_-]?token|client[_-]?secret|password|secret)\s*[=:]\s*[^\s,;]+'
           )
-          $tracked = @(git ls-files)
+          $tracked = @(git ls-files | ForEach-Object {
+            ([string]$_).Trim([char]0xFEFF, [char]0x0D, [char]0x0A, [char]0x20, [char]0x09)
+          })
           $findings = 0
           foreach ($relative in $tracked) {
             $path = Join-Path (Get-Location) $relative
+            if (-not [System.IO.File]::Exists($path)) {
+              throw "Tracked file is missing"
+            }
             if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
               throw "Tracked file is missing"
             }

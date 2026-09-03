@@ -19,12 +19,14 @@ $patterns = [ordered]@{
 
 $findings = [System.Collections.Generic.List[object]]::new()
 if ($TrackedOnly) {
-    $relativePaths = @(git -C $rootPath ls-files)
+    $relativePaths = @(git -C $rootPath ls-files | ForEach-Object {
+        ([string]$_).Trim([char]0xFEFF, [char]0x0D, [char]0x0A, [char]0x20, [char]0x09)
+    })
     if ($LASTEXITCODE -ne 0) {
         throw 'Unable to enumerate tracked files'
     }
     $files = @($relativePaths | ForEach-Object {
-        Get-Item -LiteralPath (Join-Path $rootPath $_) -ErrorAction Stop
+        Join-Path $rootPath $_
     })
 }
 else {
@@ -33,13 +35,23 @@ else {
 $textFileCount = 0
 
 foreach ($file in $files) {
-    $relative = [System.IO.Path]::GetRelativePath($rootPath, $file.FullName).Replace('\', '/')
+    if ($TrackedOnly) {
+        $fullName = [string]$file
+        if (-not [System.IO.File]::Exists($fullName)) {
+            throw 'Tracked file is missing'
+        }
+    }
+    else {
+        $fullName = $file.FullName
+    }
+
+    $relative = [System.IO.Path]::GetRelativePath($rootPath, $fullName).Replace('\', '/')
     if ($relative -like '.git/*' -or $relative -eq '.git' -or
         $relative -like 'build/*') {
         continue
     }
 
-    $bytes = [System.IO.File]::ReadAllBytes($file.FullName)
+    $bytes = [System.IO.File]::ReadAllBytes($fullName)
     if ($bytes -contains [byte]0) {
         continue
     }
