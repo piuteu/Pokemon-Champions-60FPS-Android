@@ -204,9 +204,9 @@ was returned unchanged.
 Runtime environment:
 
 ```text
-ADB serial:       emulator-5554 (state=device; emulator-5562 was offline)
+ADB serial:       <offline-emulator-serial> (state=device; <offline-emulator-serial> was offline)
 Android API:      33 / Tiramisu
-process:          normal Pokémon Champions launch, PID 4487
+process:          normal Pokémon Champions launch, PID <pid>
 ABI list:         x86_64,x86,arm64-v8a,armeabi-v7a,armeabi
 NativeBridge:     libnb.so (Houdini path)
 payload ABI:      AArch64 guest, sizeof(void*)=8
@@ -263,8 +263,8 @@ build/logs/fps02_interactive_sweep_20260903_001049.log
 
 The host-side dump was taken on 2026-09-03 at 00:10:49 JST without clearing
 logcat at the end of the user session. The selected ADB serial was
-`emulator-5554` (`device`); `emulator-5562` was ignored because it was
-`offline`. The target process was `jp.pokemon.pokemonchampions`, PID `5521`.
+`<emulator-serial>` (`device`); `<emulator-serial>` was ignored because it was
+`offline`. The target process was `jp.pokemon.pokemonchampions`, PID `<pid>`.
 The first and last PCFPS records were device timestamps
 `09-02 23:58:33.848` and `09-03 00:04:53.429`, a diagnostic event window of
 379.581 seconds (approximately 6 minutes 19.6 seconds). The process was still

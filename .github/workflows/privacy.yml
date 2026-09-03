@@ -1,0 +1,63 @@
+name: Privacy Gate
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  privacy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+
+      - name: Tracked text privacy scan
+        shell: pwsh
+        run: ./scripts/privacy-check.ps1 -Root . -TrackedOnly
+
+      - name: Secret pattern scan
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $patterns = @(
+            '-----BEGIN [A-Z0-9 ]*PRIVATE KEY-----',
+            '(?i)authorization\s*:\s*bearer\s+\S+',
+            '(?i)\b(?:api[_-]?key|access[_-]?token|refresh[_-]?token|client[_-]?secret|password|secret)\s*[=:]\s*[^\s,;]+'
+          )
+          $tracked = @(git ls-files)
+          $findings = 0
+          foreach ($relative in $tracked) {
+            $path = Join-Path (Get-Location) $relative
+            if (-not (Test-Path -LiteralPath $path -PathType Leaf)) {
+              throw "Tracked file is missing"
+            }
+            $bytes = [System.IO.File]::ReadAllBytes($path)
+            if ($bytes -contains [byte]0) {
+              continue
+            }
+            try {
+              $text = [System.Text.UTF8Encoding]::new($false, $true).GetString($bytes)
+            }
+            catch {
+              continue
+            }
+            foreach ($pattern in $patterns) {
+              if ([regex]::IsMatch($text, $pattern)) {
+                $findings++
+              }
+            }
+          }
+          if ($findings -gt 0) {
+            throw "Secret pattern scan failed"
+          }
+          "SECRET_PATTERN_SCAN_PASS tracked_files=$($tracked.Count)"
+
+      - name: Git identity gate
+        shell: pwsh
+        run: ./scripts/git-identity-check.ps1 -Root .

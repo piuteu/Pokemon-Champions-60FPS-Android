@@ -2,13 +2,14 @@
 
 This checklist is a publication draft for PM review. The repository must
 remain private until the owner approves the legal, privacy, installation, and
-release gates. No public visibility change, release tag, or GitHub Release was
-performed by PUBLIC-01.
+release gates. No public visibility change, release tag, or GitHub Release has
+been performed in this staging repository.
 
 ## Repository and code
 
 - [ ] Repository visibility remains private until PM approval.
-- [x] CODE-01 audited baseline is merged at the PUBLIC-01 base.
+- [x] The audited production working tree was exported without migrating
+  legacy research history.
 - [x] CODE-01 runtime freeze is maintained; no diagnostic or probe material
   was restored.
 - [x] Current-tree audit completed: no tracked APK, split, game binary,
@@ -18,9 +19,12 @@ performed by PUBLIC-01.
   binary, extracted asset, Frida server, emulator image, archive, or
   credential/private-key path found.
 - [x] Secret scan passed for the current tree and reachable history.
-- [ ] Privacy and author metadata reviewed by PM. The 20 pre-existing reachable
-  commits use the same author email; this is a category-C sanitization finding,
-  not an automatic history rewrite.
+- [x] Fresh Git history contains one sanitized root lineage; legacy research
+  history was not migrated.
+- [x] Reachable commit author and committer metadata use only the sanitized
+  project identity; no legacy identity is present.
+- [ ] Privacy gate and author metadata remain subject to PM review before
+  public visibility.
 - [x] Copyrighted/proprietary file audit passed for the current tree and
   reachable history.
 
@@ -28,8 +32,8 @@ performed by PUBLIC-01.
 
 - [x] README describes the independent runtime-only project and current
   validated version without presenting it as a 1.1.5-only product.
-- [ ] `LICENSE` source-available draft reviewed and approved by the project
-  owner.
+- [ ] `LICENSE` source-available license and third-party carve-out reviewed
+  and approved by the project owner.
 - [x] Source-available wording is used; the project is not described as
   OSI-approved open source.
 - [x] Current supported version and future-version policy are documented.
@@ -72,8 +76,9 @@ performed by PUBLIC-01.
 
 - [x] Recommended repository description is recorded below.
 - [x] Recommended GitHub topics are recorded below.
-- [ ] First public release tag is PM-approved; PUBLIC-01 has not created a new
-  tag (an earlier `v0.1.0-poc` repository tag exists).
+- [x] No legacy tag was migrated into this fresh staging repository; no tag or
+  release has been created here.
+- [ ] First public release tag is PM-approved; no public tag has been created.
 - [ ] Release notes are PM-approved; the current file is a draft only.
 - [ ] Repository visibility is changed only after PM review of this checklist,
   LICENSE, README, history/privacy findings, and the fresh-install decision.

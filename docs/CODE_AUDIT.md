@@ -265,7 +265,7 @@ The cleaned module was installed through the existing Magisk/ReZygisk module
 flow, without Frida and without changing the APK. The device reported:
 
 ```text
-serial: emulator-5554
+serial: <emulator-serial>
 root: uid=0(root) gid=0(root) groups=0(root)
 package: jp.pokemon.pokemonchampions
 versionName: 1.1.5
@@ -297,14 +297,14 @@ version.
   removed diagnostic markers, and no fatal/ANR line. This is a completed user
   interaction gate; it is not a replacement for a numeric frame-counter
   measurement.
-- Post-interactive state: `emulator-5554`, target PID `4292`, Android 13/API
+- Post-interactive state: `<emulator-serial>`, target PID `<pid>`, Android 13/API
   33, x86_64 with `libnb.so`, root present, and no `frida-server` process.
 - Stock-revert gate: after a guest reboot with the module disable marker
-  active, the vanilla package launched at PID `3355` with zero `PCFPS` lines,
+  active, the vanilla package launched at PID `<pid>` with zero `PCFPS` lines,
   zero fatal/ANR lines, and no Frida process. Package version remained
   `1.1.5` / `3191`.
 - Re-enable gate: after removing only the disable marker and restarting the
-  existing Tiramisu64 instance, the clean module launched at PID `3352` with
+  existing Tiramisu64 instance, the clean module launched at PID `<pid>` with
   one each of constructor, `JNI_OnLoad`, target hook installation, animation
   hook installation, initial 60 set, and successful `Runtime.load0` return.
   No forbidden diagnostic marker, fatal/ANR line, or Frida process was seen.

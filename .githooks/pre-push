@@ -1,0 +1,32 @@
+#!/bin/sh
+set -eu
+
+repo_root=$(git rev-parse --show-toplevel)
+if command -v pwsh >/dev/null 2>&1; then
+    powershell_command=pwsh
+elif command -v powershell.exe >/dev/null 2>&1; then
+    powershell_command=powershell.exe
+else
+    echo "Privacy hook requires PowerShell." >&2
+    exit 1
+fi
+
+case "$repo_root" in
+    /[A-Za-z]/*)
+        if command -v cygpath >/dev/null 2>&1; then
+            repo_root_ps=$(cygpath -w "$repo_root")
+        else
+            repo_root_ps="$repo_root"
+        fi
+        ;;
+    *)
+        repo_root_ps="$repo_root"
+        ;;
+esac
+
+"$powershell_command" -NoProfile -ExecutionPolicy Bypass \
+    -File "$repo_root_ps/scripts/privacy-check.ps1" \
+    -Root "$repo_root_ps" -TrackedOnly
+"$powershell_command" -NoProfile -ExecutionPolicy Bypass \
+    -File "$repo_root_ps/scripts/git-identity-check.ps1" \
+    -Root "$repo_root_ps" -RequireConfig

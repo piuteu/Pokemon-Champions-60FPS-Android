@@ -1,7 +1,8 @@
 [CmdletBinding()]
 param(
     [string]$Root = (Join-Path $PSScriptRoot '..'),
-    [string]$DisallowedUsername = $env:PCFPS_PRIVACY_LOCAL_USERNAME
+    [string]$DisallowedUsername = $env:PCFPS_PRIVACY_LOCAL_USERNAME,
+    [switch]$TrackedOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -17,7 +18,18 @@ $patterns = [ordered]@{
 }
 
 $findings = [System.Collections.Generic.List[object]]::new()
-$files = @(Get-ChildItem -LiteralPath $rootPath -Recurse -File -Force)
+if ($TrackedOnly) {
+    $relativePaths = @(git -C $rootPath ls-files)
+    if ($LASTEXITCODE -ne 0) {
+        throw 'Unable to enumerate tracked files'
+    }
+    $files = @($relativePaths | ForEach-Object {
+        Get-Item -LiteralPath (Join-Path $rootPath $_) -ErrorAction Stop
+    })
+}
+else {
+    $files = @(Get-ChildItem -LiteralPath $rootPath -Recurse -File -Force)
+}
 $textFileCount = 0
 
 foreach ($file in $files) {

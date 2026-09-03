@@ -31,8 +31,8 @@ The primary capture is:
 It used the existing vanilla installation and the already-proven runtime baseline:
 
 - package: `jp.pokemon.pokemonchampions`
-- ADB serial selected dynamically: `emulator-5554`
-- PID at start and stop: `2925`
+- ADB serial selected dynamically: `<emulator-serial>`
+- PID at start and stop: `<pid>`
 - exact Unity BLAST surface: `SurfaceView[jp.pokemon.pokemonchampions/com.unity3d.player.UnityPlayerActivity](BLAST)#114`
 - BlueStacks Tiramisu64, Android 13 / API 33
 - guest ABI: x86_64 with ARM64 NativeBridge support (`libnb.so`)
